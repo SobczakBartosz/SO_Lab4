@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import com.sun.media.sound.SoftMixingSourceDataLine;
+
 public class Algorithms {
 
 	public static int proportional_allocation(ArrayList<Process> input_process_list, int frame_number){
@@ -17,13 +19,13 @@ public class Algorithms {
 			
 		for(int i = 0; i < process_list.size(); i++){
 		all_processes_size += process_list.get(i).references.size();
-	}
+		}
+		
+		for(int i = 0; i < process_list.size(); i++){
+			pages_errors += LRU((process_list.get(i).references.size()*frame_number)/all_processes_size, process_list.get(i).references);
+		}
 	
-	for(int i = 0; i < process_list.size(); i++){
-		pages_errors += LRU((process_list.get(i).references.size()*frame_number)/all_processes_size, process_list.get(i).references);
-	}
-
-		return pages_errors;
+			return pages_errors;
 	}
 	
 	public static int even_allocation(ArrayList<Process> input_process_list, int frame_number){
@@ -38,9 +40,9 @@ public class Algorithms {
 			if(process_list.get(i).references.size() < 1)
 				process_list.remove(i);
 			
-			for(int i = 0; i < process_list.size(); i++){
-				pages_errors += LRU(frame_number/process_list.size(), process_list.get(i).references);
-			}
+		for(int i = 0; i < process_list.size(); i++){
+			pages_errors += LRU(frame_number/process_list.size(), process_list.get(i).references);
+		}
 		
 		return pages_errors;
 	}
@@ -101,20 +103,29 @@ public class Algorithms {
 		for(Process process : input_process_list){
 			process_list.add(new Process(process));
 		}
-		
-		while(process_list.size() > 0){
 
+		while(process_list.size() > 0){
+			
 			for(int i = 0; i < process_list.size(); i++)
-				if(process_list.get(i).references.size() < 1)
+				if(process_list.get(i).references.size() < 1){
+					free_frames += process_frame_number[i];
 					process_list.remove(i);
+				}
+					
 			
 			for(int i = 0; i < process_list.size(); i++){
 				process_pages_errors[i] = FLRU(process_frame_number[i], process_list.get(i).references, N);
 				pages_errors +=process_pages_errors[i];
-				if(process_pages_errors[i] > max_erros)
-					process_pages_errors[i]++;
-				if(process_pages_errors[i] < min_erros)
-					process_pages_errors[i]--;
+				if(free_frames > 0 && process_frame_number[i] > 4 && process_frame_number[i] < (frame_number/2)){
+					if(process_pages_errors[i] > max_erros){
+						process_frame_number[i]++;
+						free_frames--;
+					}
+					if(process_pages_errors[i] < min_erros){
+						process_frame_number[i]--;
+						free_frames++;
+					}
+				}
 			}
 		}
 		
@@ -190,7 +201,8 @@ public class Algorithms {
 					}
 					counter++;				
 				}
-			}
+			}else
+				input_references.removeAll(input_references);
 		}
 			return page_errors;
 	} // LRU algorithm used in zone_allocation (expanded to working set and counter)
@@ -202,34 +214,35 @@ public class Algorithms {
 		ArrayList<Integer> frames_used = new ArrayList<Integer>(); 	// indexes of frames which should be replaced (descending order)
 		int[] frames;
 		
-		
-		if(frame_number < input_references.size()){
-			frames = new int[frame_number];
-			for(int i = 0; i < frame_number; i++){
-				frames[i] = i;
-				frames_used.add(frames[i]);
-			}	
-			//fill frames at the beginning					
-					
-			while(!input_references.isEmpty() && counter < N){
-				int index = 0;
-				while(index < frame_number && frames[index] != input_references.get(0))
-					index++;
-				if(index < frame_number){
-					int tmp = frames_used.remove(frames_used.indexOf(index));	//delete index of current reference in frames_used and add it to the end of the list
-					frames_used.add(tmp);														
-					input_references.remove(0);
-				}else{
-					
-					remove_index = frames_used.remove(0);
-					frames_used.add(remove_index);
-					frames[remove_index] = input_references.remove(0);
+		if(frame_number > 0){
+			if(frame_number < input_references.size()){
+				frames = new int[frame_number];
+				for(int i = 0; i < frame_number; i++){
+					frames[i] = i;
+					frames_used.add(frames[i]);
+				}	
+				//fill frames at the beginning					
+						
+				while(!input_references.isEmpty() && counter < N){
+					int index = 0;
+					while(index < frame_number && frames[index] != input_references.get(0))
+						index++;
+					if(index < frame_number){
+						int tmp = frames_used.remove(frames_used.indexOf(index));	//delete index of current reference in frames_used and add it to the end of the list
+						frames_used.add(tmp);														
+						input_references.remove(0);
+					}else{
+						remove_index = frames_used.remove(0);
+						frames_used.add(remove_index);
+						frames[remove_index] = input_references.remove(0);
 
-					page_errors++;
+						page_errors++;
+					}
+					counter++;
 				}
-				counter++;
-			}
-		}	
+			}else
+				input_references.removeAll(input_references);
+		}
 			return page_errors;
 	} // FLRU algorithm used in frequency_control_page_fault_allocation (expanded to counter)
 }
