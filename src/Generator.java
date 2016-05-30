@@ -5,12 +5,12 @@ public class Generator {
 
 	public static void main(String[] args){
 		
-		ArrayList<Process> process_list = generateProcesses(10, 30, 100);
+		ArrayList<Process> process_list = generateProcesses(10, 30, 50);
 		
-		System.out.printf("", "Iloœæ b³êdów stron dla 10 dla 100 ramek procesów dla algorytmu równego: ", Algorithms.even_allocation(process_list, 100));
-		System.out.printf("", "Iloœæ b³êdów stron dla 10 dla 100 ramek procesów dla algorytmu proporcjonalnego: ", Algorithms.proportional_allocation(process_list, 100));
-		System.out.printf("", "Iloœæ b³êdów stron dla 10 dla 100 ramek procesów dla algorytmu sterowania czêstoœci¹ b³êdów: ", Algorithms.frequency_control_page_fault_allocation(process_list, 100, 8, 15, 20));
-		System.out.printf("", "Iloœæ b³êdów stron dla 10 dla 100 ramek procesów dla algorytmu strefowego: ", Algorithms.zone_allocation(process_list, 100, 30));
+		System.out.printf("%s %d %n", "Iloœæ b³êdów stron dla 10 dla 100 ramek procesów dla algorytmu równego: ", Algorithms.even_allocation(process_list, 100)); 
+		System.out.printf("%s %d %n", "Iloœæ b³êdów stron dla 10 dla 100 ramek procesów dla algorytmu proporcjonalnego: ", Algorithms.proportional_allocation(process_list, 100));
+		System.out.printf("%s %d %n", "Iloœæ b³êdów stron dla 10 dla 100 ramek procesów dla algorytmu sterowania czêstoœci¹ b³êdów: ", Algorithms.frequency_control_page_fault_allocation(process_list, 100, 5, 10, 20));
+		System.out.printf("%s %d %n", "Iloœæ b³êdów stron dla 10 dla 100 ramek procesów dla algorytmu strefowego: ", Algorithms.zone_allocation(process_list, 100, 30));
 	}
 	
 	public static ArrayList<Process> generateProcesses(int number_of_processes, int max_pages, int max_references){
@@ -22,6 +22,4 @@ public class Generator {
 		
 	return process_list;
 	}
-
-	
 }
