@@ -10,6 +10,23 @@ public class Algorithms {
 	
 	public static int even_allocation(ArrayList<Process> input_process_list, int frame_number){
 		int pages_errors = 0;
+		
+		ArrayList<Process> process_list = new ArrayList<Process>();
+		for(Process process : input_process_list){
+			process_list.add(new Process(process));
+		}
+		
+		while(process_list.size() > 0){
+
+			for(Process process : process_list){
+				if(process.references.size() < 1)
+					process_list.remove(process);
+			}
+			
+			for(int i = 0; i < process_list.size(); i++){
+				pages_errors += LRU(frame_number/process_list.size(), process_list.get(i).references);	//frames allocation proportional to working set
+			}
+		}
 
 		return pages_errors;
 	}
