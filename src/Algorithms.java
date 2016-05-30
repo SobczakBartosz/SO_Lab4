@@ -11,10 +11,13 @@ public class Algorithms {
 			process_list.add(new Process(process));
 		}
 		
-			for(Process process : process_list){
-				if(process.references.size() < 1)
-					process_list.remove(process);
-			}
+//			for(Process process : process_list){
+//				if(process.references.size() < 1)
+//					process_list.remove(process);
+//			}
+		for(int i = 0; i < process_list.size(); i++)
+			if(process_list.get(i).references.size() < 1)
+				process_list.remove(i);
 			
 			for(int i = 0; i < process_list.size(); i++){
 				all_processes_size += process_list.get(i).getPages_number();
@@ -35,10 +38,13 @@ public class Algorithms {
 			process_list.add(new Process(process));
 		}
 		
-			for(Process process : process_list){
-				if(process.references.size() < 1)
-					process_list.remove(process);
-			}
+//			for(Process process : process_list){
+//				if(process.references.size() < 1)
+//					process_list.remove(process);
+//			}
+		for(int i = 0; i < process_list.size(); i++)
+			if(process_list.get(i).references.size() < 1)
+				process_list.remove(i);
 			
 			for(int i = 0; i < process_list.size(); i++){
 				pages_errors += LRU(frame_number/process_list.size(), process_list.get(i).references);
@@ -67,10 +73,13 @@ public class Algorithms {
 		
 		while(process_list.size() > 0){
 
-			for(Process process : process_list){
-				if(process.references.size() < 1)
-					process_list.remove(process);
-			}
+//			for(Process process : process_list){
+//				if(process.references.size() < 1)
+//					process_list.remove(process);
+//			}
+			for(int i = 0; i < process_list.size(); i++)
+				if(process_list.get(i).references.size() < 1)
+					process_list.remove(i);
 			
 			working_set_sum = 0;
 			for(int i = 0; i < working_set_number.length; i++){
@@ -102,10 +111,13 @@ public class Algorithms {
 		
 		while(process_list.size() > 0){
 
-			for(Process process : process_list){
-				if(process.references.size() < 1)
-					process_list.remove(process);
-			}
+			for(int i = 0; i < process_list.size(); i++)
+				if(process_list.get(i).references.size() < 1)
+					process_list.remove(i);
+//			for(Process process : process_list){
+//				if(process.references.size() < 1)
+//					process_list.remove(process);
+//			}
 			
 			for(int i = 0; i < process_list.size(); i++){
 				process_pages_errors[i] = FLRU(process_frame_number[i], process_list.get(i).references, N);
