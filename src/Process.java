@@ -17,7 +17,7 @@ public class Process {
 			references.add(rand.nextInt(pages_number));
 		}
 	}
-	
+
 //	public int getFrames_number(){
 //		return frames_number;
 //	}
@@ -29,5 +29,4 @@ public class Process {
 	public int getPages_number() {
 		return pages_number;
 	}
-
 }
