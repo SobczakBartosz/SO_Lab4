@@ -4,7 +4,26 @@ public class Algorithms {
 
 	public static int proportional_allocation(ArrayList<Process> input_process_list, int frame_number){
 		int pages_errors = 0;
+		int all_processes_size = 0;
 		
+		ArrayList<Process> process_list = new ArrayList<Process>();
+		for(Process process : input_process_list){
+			process_list.add(new Process(process));
+		}
+		
+			for(Process process : process_list){
+				if(process.references.size() < 1)
+					process_list.remove(process);
+			}
+			
+			for(int i = 0; i < process_list.size(); i++){
+				all_processes_size += process_list.get(i).getPages_number();
+			}
+			
+			for(int i = 0; i < process_list.size(); i++){
+				pages_errors += LRU((process_list.get(i).getPages_number()*frame_number)/all_processes_size, process_list.get(i).references);
+			}
+
 		return pages_errors;
 	}
 	
@@ -16,18 +35,15 @@ public class Algorithms {
 			process_list.add(new Process(process));
 		}
 		
-		while(process_list.size() > 0){
-
 			for(Process process : process_list){
 				if(process.references.size() < 1)
 					process_list.remove(process);
 			}
 			
 			for(int i = 0; i < process_list.size(); i++){
-				pages_errors += LRU(frame_number/process_list.size(), process_list.get(i).references);	//frames allocation proportional to working set
+				pages_errors += LRU(frame_number/process_list.size(), process_list.get(i).references);
 			}
-		}
-
+		
 		return pages_errors;
 	}
 	
