@@ -18,6 +18,11 @@ public class Process {
 		}
 	}
 
+	public Process(Process process){
+		 this.references = (ArrayList<Integer>)process.references.clone();
+		 this.pages_number = process.getPages_number();
+	}
+		 
 //	public int getFrames_number(){
 //		return frames_number;
 //	}
