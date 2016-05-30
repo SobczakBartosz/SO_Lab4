@@ -4,11 +4,11 @@ import java.util.Random;
 public class Process {
 	ArrayList<Integer> references = new ArrayList<Integer>();
 
-	private int frames_number;
+//	private int frames_number;
 	private int pages_number;
 	
-	public Process(int frames_number, int pages_number, int references_number){
-		this.frames_number = frames_number;
+	public Process(/*int frames_number ,*/ int pages_number, int references_number){
+//		this.frames_number = frames_number;
 		this.pages_number = pages_number;
 		
 		Random rand = new Random();
@@ -17,23 +17,16 @@ public class Process {
 			references.add(rand.nextInt(pages_number));
 		}
 	}
-	
-	public Process(Process process){
-		this.references = (ArrayList<Integer>)process.references.clone();
-		this.frames_number = process.getFrames_number();
-		this.pages_number = process.getPages_number();
-	}
-	
-	public int getFrames_number(){
-		return frames_number;
-	}
 
-	public void setFrames_number(int frames_number){
-		this.frames_number = frames_number;
-	}
+//	public int getFrames_number(){
+//		return frames_number;
+//	}
+//
+//	public void setFrames_number(int frames_number){
+//		this.frames_number = frames_number;
+//	}
 
 	public int getPages_number() {
 		return pages_number;
 	}
-
 }
